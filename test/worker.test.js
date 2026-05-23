@@ -53,6 +53,13 @@ function createRequest(method, path, body = null) {
   return new Request(`https://example.com${path}`, init);
 }
 
+function createFormRequest(path, formData) {
+  return new Request(`https://example.com${path}`, {
+    method: 'POST',
+    body: formData,
+  });
+}
+
 describe('Cloudflare Worker API', () => {
   let mockKV;
   let env;
@@ -79,6 +86,62 @@ describe('Cloudflare Worker API', () => {
       const response = await worker.fetch(request, env);
 
       expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
+    });
+  });
+
+  describe('POST /api/transcribe', () => {
+    it('should reject requests without audio file', async () => {
+      const formData = new FormData();
+      const request = createFormRequest('/api/transcribe', formData);
+      const response = await worker.fetch(request, env);
+
+      expect(response.status).toBe(400);
+      const data = await response.json();
+      expect(data.error).toContain('Missing audio file');
+    });
+
+    it('should return transcribed shopping items from Groq response', async () => {
+      const originalFetch = globalThis.fetch;
+      vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({
+        text: '牛乳とパン、卵を追加してください',
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      })));
+
+      const formData = new FormData();
+      formData.append('file', new File(['fake audio'], 'voice.webm', { type: 'audio/webm' }));
+
+      const request = createFormRequest('/api/transcribe', formData);
+      const response = await worker.fetch(request, { ...env, GROQ_API_KEY: 'test-key' });
+
+      expect(response.status).toBe(200);
+      const data = await response.json();
+      expect(data.text).toBe('牛乳とパン、卵を追加してください');
+      expect(data.items.map((item) => item.label)).toEqual(['牛乳', 'パン', '卵']);
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        'https://api.groq.com/openai/v1/audio/transcriptions',
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({
+            Authorization: 'Bearer test-key',
+          }),
+        })
+      );
+
+      vi.stubGlobal('fetch', originalFetch);
+    });
+
+    it('should report configuration errors when Groq API key is missing', async () => {
+      const formData = new FormData();
+      formData.append('file', new File(['fake audio'], 'voice.webm', { type: 'audio/webm' }));
+
+      const request = createFormRequest('/api/transcribe', formData);
+      const response = await worker.fetch(request, env);
+
+      expect(response.status).toBe(500);
+      const data = await response.json();
+      expect(data.details).toContain('Groq service not configured');
     });
   });
 

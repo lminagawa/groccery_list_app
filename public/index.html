@@ -49,7 +49,7 @@
       margin-bottom: 12px;
       color: #1a1a1a;
       font-weight: 800;
-      letter-spacing: -0.5px;
+      letter-spacing: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -468,7 +468,7 @@
     
     .item-label-text {
       display: block;
-      letter-spacing: -0.2px;
+      letter-spacing: 0;
       word-break: break-word; /* 長い単語を折り返し */
     }
     
@@ -696,7 +696,7 @@
       margin-bottom: 24px;
       color: #1a1a1a;
       font-weight: 800;
-      letter-spacing: -0.3px;
+      letter-spacing: 0;
     }
     
     .modal-content label {
@@ -1575,6 +1575,597 @@
     @media (prefers-color-scheme: dark) {
       /* ダークモード時のスタイルをここに追加可能 */
     }
+
+    /* Modern mobile app refresh */
+    :root {
+      --surface: #fffefa;
+      --surface-raised: #ffffff;
+      --canvas: #f4f1e8;
+      --ink: #17211d;
+      --muted: #68746e;
+      --line: #e4ded0;
+      --green: #167a55;
+      --green-strong: #0f5f42;
+      --amber: #c98216;
+      --red: #c24132;
+      --blue: #2d6f9f;
+      --shadow-soft: 0 18px 50px rgba(31, 43, 36, 0.12);
+      --shadow-tap: 0 8px 22px rgba(31, 43, 36, 0.1);
+    }
+
+    html {
+      background: var(--canvas);
+    }
+
+    body {
+      font-family: "Avenir Next", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(22, 122, 85, 0.08), rgba(244, 241, 232, 0) 260px),
+        radial-gradient(circle at 20% -10%, rgba(201, 130, 22, 0.12), transparent 280px),
+        var(--canvas);
+      padding-bottom: calc(124px + env(safe-area-inset-bottom));
+      letter-spacing: 0;
+      width: 100vw;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 760px;
+      width: 100%;
+      padding: 0 12px 28px;
+      overflow-x: hidden;
+    }
+
+    .header {
+      top: 0;
+      margin: 0 -12px 14px;
+      width: calc(100% + 24px);
+      max-width: 100vw;
+      padding: max(14px, env(safe-area-inset-top)) 16px 14px;
+      background: rgba(255, 254, 250, 0.9);
+      border: 1px solid rgba(228, 222, 208, 0.9);
+      border-top: 0;
+      border-radius: 0 0 26px 26px;
+      box-shadow: 0 12px 34px rgba(31, 43, 36, 0.1);
+      backdrop-filter: blur(18px);
+    }
+
+    .header h1 {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      margin: 0 0 14px;
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+
+    .title-wrap {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .title-kicker {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    #title {
+      color: var(--ink);
+      font-size: clamp(22px, 7vw, 34px);
+      font-weight: 900;
+      line-height: 1.05;
+      overflow-wrap: anywhere;
+      letter-spacing: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sync-indicator {
+      margin-left: 0;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(22, 122, 85, 0.12);
+    }
+
+    .share-btn,
+    .copy-btn,
+    .modal-btn-primary,
+    .catalog-close-btn,
+    .catalog-add-btn {
+      background: var(--ink);
+      border-radius: 14px;
+      box-shadow: var(--shadow-tap);
+      color: #fffefa;
+      letter-spacing: 0;
+    }
+
+    .share-btn {
+      min-height: 44px;
+      padding: 0 14px;
+      font-size: 13px;
+    }
+
+    .filter-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 0;
+    }
+
+    .filter-section label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+    }
+
+    .filter-section select,
+    .add-section select,
+    .modal-content input,
+    .modal-content select,
+    .share-url-container input {
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--ink);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+      letter-spacing: 0;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .item-list {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .list-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin: 0 0 14px;
+    }
+
+    .summary-pill {
+      min-height: 58px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 8px 22px rgba(31, 43, 36, 0.06);
+    }
+
+    .summary-value {
+      display: block;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .summary-label {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .item {
+      min-height: 74px;
+      margin: 0;
+      padding: 14px 12px 14px 16px;
+      background: var(--surface-raised);
+      border: 1px solid rgba(228, 222, 208, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 10px 26px rgba(31, 43, 36, 0.08);
+    }
+
+    .item:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .item-label {
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .item-label.checked .item-label-text {
+      color: #8d958f;
+      opacity: 1;
+    }
+
+    .tag-badge,
+    .suggestion-tag,
+    .catalog-item-store,
+    .catalog-item-brand {
+      border-radius: 999px;
+      box-shadow: none;
+      letter-spacing: 0;
+    }
+
+    .tag-woolies { background: var(--green); }
+    .tag-coles { background: var(--red); }
+    .tag-aldi { background: var(--blue); }
+    .tag-iga { background: #7157a8; }
+    .tag-asian-grocery { background: var(--amber); }
+    .tag-chemist { background: #9d4d79; }
+    .tag-kmart { background: #227a91; }
+    .tag-custom { background: #59615d; }
+
+    .item-checkbox-wrapper {
+      min-width: 54px;
+      min-height: 54px;
+      margin: -10px -6px -10px 0;
+      border-radius: 18px;
+    }
+
+    .item input[type="checkbox"] {
+      width: 30px;
+      height: 30px;
+      accent-color: var(--green);
+    }
+
+    .empty-state,
+    .loading {
+      margin-top: 24px;
+      padding: 42px 22px;
+      background: rgba(255, 255, 255, 0.62);
+      border: 1px dashed #d4c9b8;
+      border-radius: 22px;
+      color: var(--muted);
+    }
+
+    .add-section {
+      max-width: 760px;
+      width: 100%;
+      padding: 10px 10px max(10px, env(safe-area-inset-bottom));
+      gap: 8px;
+      background: rgba(255, 254, 250, 0.94);
+      border: 1px solid rgba(228, 222, 208, 0.96);
+      border-bottom: 0;
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 -14px 40px rgba(31, 43, 36, 0.14);
+      backdrop-filter: blur(18px);
+    }
+
+    .add-section input[type="text"] {
+      min-height: 54px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      color: var(--ink);
+      font-weight: 700;
+      letter-spacing: 0;
+      min-width: 0;
+      width: 0;
+      flex: 1 1 0;
+    }
+
+    .add-section button {
+      min-height: 54px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-tap);
+      letter-spacing: 0;
+    }
+
+    #addBtn {
+      min-width: 58px;
+      padding: 0 15px;
+      background: var(--green);
+    }
+
+    .voice-btn {
+      width: 54px;
+      min-width: 54px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      color: var(--green-strong);
+      border: 1px solid var(--line);
+    }
+
+    .voice-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.4;
+    }
+
+    .voice-btn.recording {
+      background: var(--red);
+      color: #fff;
+      border-color: var(--red);
+      animation: voicePulse 1.15s ease-in-out infinite;
+    }
+
+    @keyframes voicePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(194, 65, 50, 0.28); }
+      50% { box-shadow: 0 0 0 9px rgba(194, 65, 50, 0); }
+    }
+
+    .fab-container {
+      right: 16px;
+      bottom: calc(92px + env(safe-area-inset-bottom));
+    }
+
+    .fab-main {
+      width: 58px;
+      height: 58px;
+      background: var(--ink);
+      box-shadow: 0 16px 34px rgba(23, 33, 29, 0.22);
+      font-size: 24px;
+    }
+
+    .fab-main.active {
+      background: var(--red);
+    }
+
+    .fab-menu-item {
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: var(--shadow-tap);
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    .modal,
+    .catalog-modal,
+    .ai-loading-modal,
+    .specials-loading-modal,
+    .share-modal {
+      background: rgba(23, 33, 29, 0.48);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-content,
+    .catalog-modal-content,
+    .share-modal-content,
+    .ai-loading-content,
+    .specials-loading-content {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+      color: var(--ink);
+    }
+
+    .modal-content h2,
+    .catalog-modal-header h2,
+    .share-modal-header h3 {
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    .modal-btn-secondary,
+    .catalog-link-btn,
+    .catalog-filter-btn {
+      background: #eee8da;
+      color: var(--ink);
+      border-radius: 14px;
+      box-shadow: none;
+      letter-spacing: 0;
+    }
+
+    .toast {
+      bottom: calc(112px + env(safe-area-inset-bottom));
+      background: var(--ink);
+      border-radius: 999px;
+      box-shadow: 0 12px 32px rgba(23, 33, 29, 0.26);
+      letter-spacing: 0;
+    }
+
+    .voice-sheet {
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: calc(84px + env(safe-area-inset-bottom));
+      z-index: 1100;
+      max-width: 736px;
+      margin: 0 auto;
+      padding: 16px;
+      display: none;
+      align-items: center;
+      gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .voice-sheet.show {
+      display: flex;
+    }
+
+    .voice-orb {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 0 8px rgba(194, 65, 50, 0.12);
+      position: relative;
+    }
+
+    .voice-orb::after {
+      content: "";
+      position: absolute;
+      inset: 15px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .voice-copy {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .voice-title {
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .voice-subtitle {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .voice-actions {
+      display: flex;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .voice-action-btn {
+      min-height: 42px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .voice-action-btn.stop {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .voice-action-btn.cancel {
+      background: #eee8da;
+      color: var(--ink);
+    }
+
+    @media (max-width: 400px) {
+      .container {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .header {
+        margin-left: -10px;
+        margin-right: -10px;
+        width: calc(100% + 20px);
+      }
+
+      .add-section {
+        gap: 6px;
+      }
+
+      .add-section select {
+        display: none;
+      }
+
+      #addBtn {
+        min-width: 52px;
+        padding: 0 12px;
+      }
+
+      .voice-btn {
+        width: 52px;
+        min-width: 52px;
+      }
+
+      .voice-sheet {
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .voice-actions {
+        width: 100%;
+      }
+
+      .voice-action-btn {
+        flex: 1;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .container {
+        width: min(390px, 100vw);
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .add-section {
+        width: min(390px, 100vw);
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .add-section select {
+        display: none;
+      }
+
+      .summary-pill {
+        min-width: 0;
+      }
+
+      .summary-value,
+      .summary-label {
+        overflow-wrap: anywhere;
+      }
+    }
+
+    @media (min-width: 721px) {
+      body {
+        padding-bottom: 116px;
+      }
+
+      .container {
+        padding-top: 18px;
+      }
+
+      .header {
+        border-radius: 28px;
+        margin: 0 0 16px;
+        width: 100%;
+      }
+
+      .item-list {
+        padding: 0;
+      }
+
+      .add-section {
+        width: min(760px, calc(100vw - 40px));
+        bottom: 18px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 12px;
+      }
+
+      .fab-container {
+        bottom: 96px;
+        right: calc(50% - 380px + 12px);
+      }
+
+      .voice-sheet {
+        bottom: 96px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1582,9 +2173,14 @@
     <!-- ヘッダー -->
     <div class="header">
       <h1>
-        <span id="title">Shopping List</span>
-        <span class="sync-indicator" id="syncIndicator"></span>
-        <button class="share-btn" onclick="showShareModal()">Share</button>
+        <span class="title-wrap">
+          <span class="title-kicker">Shared grocery list</span>
+          <span id="title">Shopping List</span>
+        </span>
+        <span class="header-actions">
+          <span class="sync-indicator" id="syncIndicator"></span>
+          <button class="share-btn" onclick="showShareModal()">共有</button>
+        </span>
       </h1>
 
       <!-- 共有モーダル -->
@@ -1616,6 +2212,20 @@
     </div>
 
     <!-- アイテムリスト -->
+    <div class="list-summary" aria-label="リスト概要">
+      <div class="summary-pill">
+        <span class="summary-value" id="summaryOpen">0</span>
+        <span class="summary-label">未購入</span>
+      </div>
+      <div class="summary-pill">
+        <span class="summary-value" id="summaryDone">0</span>
+        <span class="summary-label">購入済み</span>
+      </div>
+      <div class="summary-pill">
+        <span class="summary-value" id="summaryTotal">0</span>
+        <span class="summary-label">合計</span>
+      </div>
+    </div>
     <ul class="item-list" id="itemList">
       <li class="loading">読み込み中...</li>
     </ul>
@@ -1624,10 +2234,29 @@
   <!-- 下部固定の入力バー -->
   <div class="add-section">
     <input type="text" id="newItemInput" placeholder="買うものを入力..." aria-label="新しいアイテム">
+    <button id="voiceBtn" class="voice-btn" type="button" aria-label="音声で追加">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+        <path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"></path>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+        <path d="M12 19v3"></path>
+      </svg>
+    </button>
     <select id="tagSelect" aria-label="タグを選択">
       <option value="">タグなし</option>
     </select>
     <button id="addBtn" aria-label="追加">追加</button>
+  </div>
+
+  <div class="voice-sheet" id="voiceSheet" role="status" aria-live="polite">
+    <div class="voice-orb" aria-hidden="true"></div>
+    <div class="voice-copy">
+      <div class="voice-title" id="voiceStatusTitle">録音中</div>
+      <div class="voice-subtitle" id="voiceStatusText">例: 牛乳とパン、卵</div>
+    </div>
+    <div class="voice-actions">
+      <button class="voice-action-btn stop" id="voiceStopBtn" type="button">追加</button>
+      <button class="voice-action-btn cancel" id="voiceCancelBtn" type="button">取消</button>
+    </div>
   </div>
 
   <!-- Floating Action Button (FAB) - AI機能メニュー -->
@@ -1753,7 +2382,9 @@
     // ============================================================
     // Configuration
     // ============================================================
-    const API_BASE = 'https://shared-shopping-list.grocery-shopping-list.workers.dev';
+    const API_BASE = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+      ? window.location.origin
+      : 'https://shared-shopping-list.grocery-shopping-list.workers.dev';
     const POLL_INTERVAL_MS = 7000; // 7秒間隔で自動更新
 
     // Preset tags
@@ -1790,6 +2421,10 @@
     let isSaving = false; // PUT中はポーリング結果を無視
     let customTags = []; // localStorage から読み込むカスタムタグ
     let editingItemId = null; // 編集中のアイテムID
+    let mediaRecorder = null;
+    let voiceStream = null;
+    let recordedChunks = [];
+    let voiceCancelled = false;
 
     // ============================================================
     // Initialization
@@ -1823,6 +2458,9 @@
 
       // Event listeners
       document.getElementById('addBtn').addEventListener('click', handleAdd);
+      document.getElementById('voiceBtn').addEventListener('click', handleVoiceToggle);
+      document.getElementById('voiceStopBtn').addEventListener('click', stopVoiceRecording);
+      document.getElementById('voiceCancelBtn').addEventListener('click', cancelVoiceRecording);
       
       // FAB menu toggle
       const fabMain = document.getElementById('fabMain');
@@ -2211,6 +2849,183 @@
       }
     }
 
+    // ============================================================
+    // Voice Input
+    // ============================================================
+    function setVoiceSheet(isVisible, title = '', text = '') {
+      const sheet = document.getElementById('voiceSheet');
+      const titleEl = document.getElementById('voiceStatusTitle');
+      const textEl = document.getElementById('voiceStatusText');
+
+      if (title) titleEl.textContent = title;
+      if (text) textEl.textContent = text;
+      sheet.classList.toggle('show', isVisible);
+    }
+
+    function setVoiceButtonRecording(isRecording) {
+      const button = document.getElementById('voiceBtn');
+      button.classList.toggle('recording', isRecording);
+      button.setAttribute('aria-label', isRecording ? '録音を停止して追加' : '音声で追加');
+    }
+
+    async function handleVoiceToggle() {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        stopVoiceRecording();
+        return;
+      }
+
+      await startVoiceRecording();
+    }
+
+    async function startVoiceRecording() {
+      if (!navigator.mediaDevices || !window.MediaRecorder) {
+        showToast('このブラウザは音声入力に対応していません', true, 3500);
+        return;
+      }
+
+      try {
+        recordedChunks = [];
+        voiceCancelled = false;
+        voiceStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const options = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+          ? { mimeType: 'audio/webm;codecs=opus' }
+          : {};
+        mediaRecorder = new MediaRecorder(voiceStream, options);
+
+        mediaRecorder.addEventListener('dataavailable', (event) => {
+          if (event.data && event.data.size > 0) {
+            recordedChunks.push(event.data);
+          }
+        });
+
+        mediaRecorder.addEventListener('stop', async () => {
+          stopVoiceTracks();
+          setVoiceButtonRecording(false);
+
+          if (voiceCancelled) {
+            setVoiceSheet(false);
+            return;
+          }
+
+          const blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
+          await transcribeVoice(blob);
+        });
+
+        mediaRecorder.start();
+        setVoiceButtonRecording(true);
+        setVoiceSheet(true, '録音中', '話し終えたら「追加」を押してください');
+      } catch (error) {
+        console.error('Voice recording failed:', error);
+        stopVoiceTracks();
+        setVoiceButtonRecording(false);
+        setVoiceSheet(false);
+        showToast('マイクを利用できませんでした', true, 3500);
+      }
+    }
+
+    function stopVoiceRecording() {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        setVoiceSheet(true, '文字起こし中', 'Groqで音声を解析しています');
+        mediaRecorder.stop();
+      }
+    }
+
+    function cancelVoiceRecording() {
+      voiceCancelled = true;
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+      } else {
+        stopVoiceTracks();
+        setVoiceButtonRecording(false);
+        setVoiceSheet(false);
+      }
+    }
+
+    function stopVoiceTracks() {
+      if (voiceStream) {
+        voiceStream.getTracks().forEach((track) => track.stop());
+      }
+      voiceStream = null;
+    }
+
+    function getAudioFilename(blob) {
+      if (blob.type.includes('mp4')) return 'shopping-voice.mp4';
+      if (blob.type.includes('ogg')) return 'shopping-voice.ogg';
+      if (blob.type.includes('wav')) return 'shopping-voice.wav';
+      return 'shopping-voice.webm';
+    }
+
+    async function transcribeVoice(blob) {
+      try {
+        const formData = new FormData();
+        formData.append('file', new File([blob], getAudioFilename(blob), { type: blob.type || 'audio/webm' }));
+
+        const response = await fetch(`${API_BASE}/api/transcribe`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(result.error || '音声入力に失敗しました');
+        }
+
+        const items = Array.isArray(result.items) ? result.items : [];
+        if (items.length === 0) {
+          setVoiceSheet(false);
+          showToast('追加できる品目を聞き取れませんでした', true, 3500);
+          return;
+        }
+
+        addVoiceItems(items, result.text || '');
+        setVoiceSheet(false);
+      } catch (error) {
+        console.error('Voice transcription failed:', error);
+        setVoiceSheet(false);
+        showToast(error.message || '音声入力に失敗しました', true, 4000);
+      }
+    }
+
+    function addVoiceItems(items, transcript) {
+      const selectedTag = document.getElementById('tagSelect').value;
+      const now = Date.now();
+      const newItems = items
+        .map((item, index) => {
+          const label = typeof item.label === 'string' ? item.label.trim() : '';
+          if (!label) return null;
+
+          const tags = selectedTag
+            ? [selectedTag]
+            : (Array.isArray(item.tags) ? item.tags.filter(tag => typeof tag === 'string' && tag.length > 0) : []);
+
+          return {
+            id: crypto.randomUUID(),
+            label,
+            checked: false,
+            tags,
+            pos: listData.items.length + index,
+            updated_at: now,
+          };
+        })
+        .filter(Boolean);
+
+      if (newItems.length === 0) {
+        showToast('追加できる品目を聞き取れませんでした', true, 3500);
+        return;
+      }
+
+      listData.items.push(...newItems);
+      listData.items.forEach((item, index) => {
+        item.pos = index;
+      });
+
+      render();
+      saveList();
+
+      const prefix = transcript ? `「${transcript}」から` : '';
+      showToast(`${prefix}${newItems.length}件追加しました`, false, 3200);
+    }
+
     /**
      * AI Generate Shopping List
      * Shows a modal with AI suggestions for user confirmation
@@ -2394,14 +3209,14 @@
           }
         });
         
-          if (updateCount > 0) {
+        if (updateCount > 0) {
           // Save updated items to server
           // `saveList` is the frontend API used to persist listData to the server.
           // `saveItems` was referenced here previously but not defined, which caused a
           // ReferenceError. Use `saveList` to persist the updated items instead.
           await saveList();
           // Re-render to show prices
-          await fetchAndRender();
+          render();
         }
         
         showToast(`✅ ${updateCount}件に価格情報を追加！節約額: $${result.totalSavings.toFixed(2)}`, false, 5000);
@@ -2643,6 +3458,7 @@
     // ============================================================
     function render() {
       const listEl = document.getElementById('itemList');
+      updateSummary();
       
       // Filter items by check status
       let itemsToShow = listData.items;
@@ -2723,6 +3539,15 @@
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
+    }
+
+    function updateSummary() {
+      const items = Array.isArray(listData.items) ? listData.items : [];
+      const done = items.filter(item => item.checked).length;
+      const open = items.length - done;
+      document.getElementById('summaryOpen').textContent = open;
+      document.getElementById('summaryDone').textContent = done;
+      document.getElementById('summaryTotal').textContent = items.length;
     }
 
     // ============================================================
