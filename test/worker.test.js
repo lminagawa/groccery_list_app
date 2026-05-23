@@ -110,7 +110,7 @@ describe('Cloudflare Worker API', () => {
       })));
 
       const formData = new FormData();
-      formData.append('file', new File(['fake audio'], 'voice.webm', { type: 'audio/webm' }));
+      formData.append('file', new Blob(['fake audio'], { type: 'audio/webm' }), 'voice.webm');
 
       const request = createFormRequest('/api/transcribe', formData);
       const response = await worker.fetch(request, { ...env, GROQ_API_KEY: 'test-key' });
@@ -134,7 +134,7 @@ describe('Cloudflare Worker API', () => {
 
     it('should report configuration errors when Groq API key is missing', async () => {
       const formData = new FormData();
-      formData.append('file', new File(['fake audio'], 'voice.webm', { type: 'audio/webm' }));
+      formData.append('file', new Blob(['fake audio'], { type: 'audio/webm' }), 'voice.webm');
 
       const request = createFormRequest('/api/transcribe', formData);
       const response = await worker.fetch(request, env);
