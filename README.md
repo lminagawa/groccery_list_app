@@ -183,6 +183,9 @@ npx wrangler kv:namespace create SHOPLIST --preview
 # OpenRouter API key (for AI generation)
 wrangler secret put OPENROUTER_API_KEY
 
+# Groq API key (for voice transcription)
+wrangler secret put GROQ_API_KEY
+
 # Optional: Backup API key for fallback
 wrangler secret put OPENROUTER_API_KEY_2
 

@@ -126,6 +126,11 @@ export default {
       return await handleGenerate(request, env);
     }
 
+    // Parse path: /api/transcribe
+    if (url.pathname === '/api/transcribe' && method === 'POST') {
+      return await handleTranscribe(request, env);
+    }
+
     // Parse path: /api/specials (Get current specials from Woolworths & Coles - Mock data)
     if (url.pathname === '/api/specials' && method === 'GET') {
       return await handleGetSpecials(request, env);
@@ -709,6 +714,110 @@ function getAllowedTag(tag) {
   if (!tag) return "Woolies";
   const found = ALLOWED_TAGS.find(t => tag.toLowerCase().includes(t.toLowerCase()));
   return found || "Woolies";
+}
+
+function parseShoppingItemsFromTranscript(text) {
+  if (!text || typeof text !== 'string') {
+    return [];
+  }
+
+  const fillerPattern = /(?:買い物リスト|リスト|買うもの|買う物|ショッピングリスト|に|へ|を|も)?(?:追加|登録|入れて|加えて|お願いします|お願い|ください|欲しい|ほしい|買って|買う|必要|いる|要る)/g;
+  const normalized = text
+    .replace(/[「」『』]/g, '')
+    .replace(/\s+/g, ' ')
+    .replace(fillerPattern, ' ')
+    .replace(/(?:それと|あと|それから|それに|追加で|ついでに)/g, ' ')
+    .replace(/[。!?！？]/g, '、')
+    .trim();
+
+  const seen = new Set();
+  return normalized
+    .split(/\s*(?:、|，|,|;|；|\/|\n|&|＆|\+| plus | and | と | や | または | 及び | および |(?<=[^\u3040-\u309f])と|と(?=[^\u3040-\u309f])|(?<=[^\u3040-\u309f])や|や(?=[^\u3040-\u309f]))\s*/iu)
+    .map((part) => part
+      .replace(/^(?:あと|それと|それから|追加で)\s*/g, '')
+      .replace(/\s*(?:を|も|と|や|です|で|して|してね)$|^\s*(?:と|や)\s*/g, '')
+      .trim())
+    .filter((label) => label.length > 0 && label.length <= 64)
+    .filter((label) => {
+      const key = label.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, 20)
+    .map((label, index) => ({
+      label,
+      tags: [],
+      checked: false,
+      pos: index,
+    }));
+}
+
+async function transcribeWithGroq(audioFile, env) {
+  const apiKey = env.GROQ_API_KEY;
+  if (!apiKey) {
+    throw new Error('Groq service not configured');
+  }
+
+  const formData = new FormData();
+  formData.append('file', audioFile);
+  formData.append('model', env.GROQ_TRANSCRIPTION_MODEL ?? 'whisper-large-v3-turbo');
+  formData.append('response_format', 'json');
+  formData.append('temperature', '0');
+  formData.append('language', 'ja');
+
+  const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text().catch(() => '');
+    console.error('Groq transcription failed:', response.status, errorText);
+    throw new Error(`Groq transcription failed (${response.status})`);
+  }
+
+  return response.json();
+}
+
+/**
+ * POST /api/transcribe
+ * Transcribe short voice input with Groq and turn it into shopping items.
+ */
+async function handleTranscribe(request, env) {
+  let formData;
+  try {
+    formData = await request.formData();
+  } catch {
+    return jsonResponse({ error: 'Invalid form data' }, 400);
+  }
+
+  const audioFile = formData.get('file');
+  if (!audioFile || typeof audioFile !== 'object' || typeof audioFile.arrayBuffer !== 'function') {
+    return jsonResponse({ error: 'Missing audio file' }, 400);
+  }
+
+  try {
+    const data = await transcribeWithGroq(audioFile, env);
+    const transcript = typeof data.text === 'string' ? data.text.trim() : '';
+    const items = parseShoppingItemsFromTranscript(transcript);
+
+    return jsonResponse({
+      status: 'ok',
+      text: transcript,
+      items,
+    });
+  } catch (error) {
+    console.error('Error in handleTranscribe:', error);
+    const status = error.message === 'Groq service not configured' ? 500 : 502;
+    return jsonResponse({
+      error: '音声入力の文字起こしに失敗しました',
+      details: error.message,
+    }, status);
+  }
 }
 
 /**
